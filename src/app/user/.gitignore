@@ -1,0 +1,14 @@
+.env
+src/app/user/.env
+**/__pycache__/
+**/*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+env/
+venv/
+ENV/
+.python-version
+.env.dev
