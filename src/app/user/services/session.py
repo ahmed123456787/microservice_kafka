@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Session
-from domain.entities.session import UserSession
-from domain.repositories.session import SessionRepository
+from ..domain.entities.session import UserSession
 
 
-class UserSessionService(SessionRepository):
+class UserSessionService:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 

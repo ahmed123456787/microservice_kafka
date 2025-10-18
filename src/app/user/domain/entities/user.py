@@ -1,30 +1,9 @@
-from typing import Optional
-from domain.enum.role import Role
-from pydantic import BaseModel
-
-class User(BaseModel):
-    def __init__(self,
-                 id: int,
-                 username: str,
-                 email: str,
-                 role: Role,
-                 password: str ,
-                 age: Optional[int] = None,
-                 is_active: bool = True,
-                 is_superuser: bool = False,
-                 is_verified: bool = False,
-                 full_name: Optional[str] = None):
+class User:
+    def __init__(self, id: int | None, name: str, email: str, hashed_password: str):
         self.id = id
-        self.username = username
-        self.password = password
+        self.name = name
         self.email = email
-        self.role = role
-        self.age = age
-        self.is_active = is_active
-        self.is_superuser = is_superuser
-        self.is_verified = is_verified
-        self.full_name = full_name
-        
+        self.hashed_password = hashed_password
 
-    def __repr__(self):
-        return f"User(id={self.id}, username='{self.username}', email='{self.email}', role='{self.role.name}', age={self.age}, is_active={self.is_active}, is_superuser={self.is_superuser}, is_verified={self.is_verified}, full_name='{self.full_name}')"
+    def can_login(self) -> bool:
+        return bool(self.email and self.hashed_password)
