@@ -1,7 +1,7 @@
 from typing import List, Optional, Dict, Any
 from sqlalchemy.orm import Session
-from ..models import User as DbUser
-from ..domain.exception import UserNotFoundError
+from models import User as DbUser
+from domain.exception import UserNotFoundError
 
 class UserService:
     def __init__(self, session: Session):

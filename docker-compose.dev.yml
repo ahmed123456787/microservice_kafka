@@ -1,3 +1,37 @@
 services:
-  kafka:
-    image: .
+  fluentd:
+    build:
+      context: ./src/app/fluentd
+      dockerfile: Dockerfile
+    container_name: fluentd-dev
+    working_dir: /fluentd
+    ports:
+      - "24224:24224"
+    volumes:
+      - ./src/app/fluentd/fluent.conf:/fluentd/etc/fluent.conf
+    networks:
+      - logging-network
+
+  user-service:
+    build:
+      context: ./src/app/user
+      dockerfile: Dockerfile
+    container_name: user-service-dev
+    working_dir: /app
+    depends_on:
+      - fluentd
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./src/app/user/.env.dev
+    volumes:
+      - ./src/app/user:/app
+    command: >
+      python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+    networks:
+      - logging-network
+
+networks:
+  logging-network:
+    driver: bridge

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from ..domain.entities.session import UserSession
+from domain.entities.session import UserSession
 
 
 class UserSessionService:

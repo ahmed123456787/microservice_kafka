@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Generator
 
-from .config.config import AppConfig
+from config.config import AppConfig
 
 # Create database engine
 engine = create_engine(

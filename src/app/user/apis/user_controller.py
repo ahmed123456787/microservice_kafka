@@ -2,13 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from ..services.user import UserService
-from ..services.session import UserSessionService
-from ..domain.entities.user import User as DomainUser
-from ..domain.exception import UserNotFoundError
-from ..schema import UserCreateRequest, UserUpdateRequest, UserResponse, LoginRequest
+from services.user import UserService
+from services.session import UserSessionService
+from domain.entities.user import User as DomainUser
+from domain.exception import UserNotFoundError
+from schema import UserCreateRequest, UserUpdateRequest, UserResponse, LoginRequest
 
-from ..database import get_db
+from database import get_db
 
 router = APIRouter(prefix="/users", tags=["users"])
 

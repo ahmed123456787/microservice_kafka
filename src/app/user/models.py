@@ -1,6 +1,6 @@
-from .database import Base  
+from database import Base  
 from sqlalchemy import Column, Integer, String, Boolean, Enum
-from .domain.enum.role import Role
+from domain.enum.role import Role
 
 class User(Base):
     __tablename__ = 'users'

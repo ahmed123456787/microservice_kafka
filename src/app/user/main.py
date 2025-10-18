@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.routing import APIRouter
-from .config.config import AppConfig
+from config.config import AppConfig
 
-from .apis.user_controller import router as user_router
-from .database import engine, Base
+from apis.user_controller import router as user_router
+from database import engine, Base
 
 router = APIRouter()
 

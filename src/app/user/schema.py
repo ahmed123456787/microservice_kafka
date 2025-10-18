@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional
-from .domain.enum.role import Role
+from domain.enum.role import Role
 
 
 class LoginRequest(BaseModel):
