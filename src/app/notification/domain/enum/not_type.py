@@ -5,3 +5,5 @@ class NotificationType(Enum):
     EMAIL = "email"
     SMS = "sms"
     PUSH = "push"
+    
+    values = [EMAIL, SMS, PUSH]
