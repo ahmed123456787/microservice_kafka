@@ -4,6 +4,7 @@ from config.config import AppConfig
 
 from apis.user_controller import router as user_router
 from database import engine, Base
+from loging import log_user_action
 
 router = APIRouter()
 
@@ -21,9 +22,10 @@ app.include_router(router=user_router)
 
 @app.get("/")
 def health_check():
+    log_user_action("health_check", "Health check endpoint accessed")
     return{ 
         "status":"success",
-        "message":"User service is up and running"
+        "message":"User service is up and running gg"
     } 
 
 

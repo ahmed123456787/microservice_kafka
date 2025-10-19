@@ -2,6 +2,7 @@ from typing import List, Optional, Dict, Any
 from sqlalchemy.orm import Session
 from models import User as DbUser
 from domain.exception import UserNotFoundError
+from producer import produce_message
 
 class UserService:
     def __init__(self, session: Session):
@@ -54,6 +55,13 @@ class UserService:
         self.session.commit()
         self.session.refresh(db_user)
         
+        # Produce a message to Kafka about the new user creation
+        produce_message(
+            topic="notification",
+            key="user_created",
+            value="User created with ID: {}".format(db_user.id)
+        )
+
         return self._to_response_dict(db_user)
     
     def update(self, user_id: int, **update_data) -> Optional[Dict[str, Any]]:
