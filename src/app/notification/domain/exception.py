@@ -1,5 +1,6 @@
 
 
-class NotificationReadError(Exception):
-    """Raised when there is an error reading notifications."""
+class NotificationError(Exception):
+    """Base exception for notification errors."""
+    pass
     
