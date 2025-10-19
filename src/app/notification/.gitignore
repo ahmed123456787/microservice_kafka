@@ -1,0 +1,15 @@
+.env.dev
+.env.prod
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+instance/
+.DS_Store
+.vscode/
+.idea/
+.env
+.env.*
+notification.db
