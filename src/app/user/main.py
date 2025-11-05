@@ -8,15 +8,14 @@ from loging import log_user_action
 
 router = APIRouter()
 
-print(AppConfig.DEBUG)
 app = FastAPI(
     docs_url="/docs" if AppConfig.DEBUG else None,
     redoc_url="/redoc" if AppConfig.DEBUG else None,
     openapi_url="/openapi.json" if AppConfig.DEBUG else None
 )
 
+# appply all the migrations
 Base.metadata.create_all(bind=engine)
-
 
 app.include_router(router=user_router)
 

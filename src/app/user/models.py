@@ -2,6 +2,7 @@ from database import Base
 from sqlalchemy import Column, Integer, String, Boolean, Enum
 from domain.enum.role import Role
 
+
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)

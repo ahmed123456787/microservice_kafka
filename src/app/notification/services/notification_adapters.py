@@ -1,6 +1,7 @@
 from domain.ports.notification_port import NotificationPort
-from domain.entities.notification import EmailNotification, SMSNotification, PushNotification
+from domain.entities.notification import EmailNotification, SMSNotification
 from config.config import AppConfig
+
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -34,7 +35,6 @@ class EmailNotificationAdapter(NotificationPort):
         print(f"Sending Email to {self.notification.get_recipient()}: {self.notification.message}")
         return True
     
-
 
 class SMSNotificationAdapter(NotificationPort):
     

@@ -9,7 +9,6 @@ from schema import UserCreateRequest, UserUpdateRequest, UserResponse, LoginRequ
 from database import get_db
 
 
-
 router = APIRouter(prefix="/users", tags=["users"])
 
 
@@ -52,6 +51,7 @@ async def create_user(
         user_dict = user_data.model_dump()  # This triggers Pydantic validation
         
         # Service handles business validation
+        
         user = await user_service.create(**user_dict)
         return user 
     except ValueError as e:  # Service validation errors

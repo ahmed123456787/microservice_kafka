@@ -13,13 +13,13 @@ engine = create_engine(
         connect_args={"check_same_thread": False} if "sqlite" in AppConfig.DATABASE_URL else {}
     )
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 def get_db() -> Generator[Session, None, None]:
     """
     Dependency that provides a SQLAlchemy session
     Yields the session and ensures it's closed after use
     """
-
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     db = SessionLocal()
     try:
         yield db

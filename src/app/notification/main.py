@@ -6,6 +6,7 @@ from events.consumer import UserEventConsumer
 import logging
 import sys
 
+
 # Configure logging FIRST
 logging.basicConfig(
     level=logging.INFO,
@@ -17,16 +18,21 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# Create global consumer instance
+# Create  consumer instance
 event_consumer = UserEventConsumer(
     bootstrap_servers=AppConfig.KAFKA_BOOTSTRAP_SERVERS,
     topic=AppConfig.KAFKA_NOTIFICATION_TOPIC,
     group_id="testing"
 )
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage application lifespan with proper startup/shutdown"""
+
+    #apply migrations.
+    base.metadata.create_all(bind=engine)
+
     # Startup
     logger.info("=" * 50)
     logger.info("🚀 Starting FastAPI application...")
@@ -38,7 +44,7 @@ async def lifespan(app: FastAPI):
         await event_consumer.start()
         logger.info("✅ Application startup complete")
     except Exception as e:
-        logger.error(f"❌ Failed to start consumer: {e}", exc_info=True)
+        logger.error(f" Failed to start consumer: {e}", exc_info=True)
         raise
     
     yield  # Application runs here
@@ -53,6 +59,8 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.error(f"Error during shutdown: {e}", exc_info=True)
 
+
+
 app = FastAPI(
     title="Notification Service",
     lifespan=lifespan,
@@ -60,6 +68,9 @@ app = FastAPI(
     redoc_url="/redoc" if AppConfig.DEBUG else None,
     openapi_url="/openapi.json" if AppConfig.DEBUG else None
 )
+
+
+
 
 @app.get("/health")
 def health_check():
@@ -70,14 +81,4 @@ def health_check():
         "consumer_running": event_consumer.running,
         "kafka_servers": AppConfig.KAFKA_BOOTSTRAP_SERVERS,
         "kafka_topic": AppConfig.KAFKA_NOTIFICATION_TOPIC
-    }
-
-@app.get("/consumer/status")
-def consumer_status():
-    """Check consumer status"""
-    return {
-        "running": event_consumer.running,
-        "topic": event_consumer.topic,
-        "group_id": event_consumer.group_id,
-        "bootstrap_servers": event_consumer.bootstrap_servers
     }

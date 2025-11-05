@@ -10,7 +10,7 @@ class NotificationStatus(Enum):
 #########################################################################################
 
 class Notification(ABC):
-    """Base notification entity with common enterprise rules"""
+    """Base notification entity"""
     
     def __init__(self, message: str):
         self.id = None  # Set by repository
