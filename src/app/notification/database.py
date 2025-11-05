@@ -8,16 +8,17 @@ from typing import Generator
 
 base = declarative_base()
 
+engine = create_engine(
+        AppConfig.DATABASE_URL,
+        connect_args={"check_same_thread": False} if "sqlite" in AppConfig.DATABASE_URL else {}
+    )
 
 def get_db() -> Generator[Session, None, None]:
     """
     Dependency that provides a SQLAlchemy session
     Yields the session and ensures it's closed after use
     """
-    engine = create_engine(
-        AppConfig.DATABASE_URL,
-        connect_args={"check_same_thread": False} if "sqlite" in AppConfig.DATABASE_URL else {}
-    )
+
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     db = SessionLocal()
     try:

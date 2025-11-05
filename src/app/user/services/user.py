@@ -4,6 +4,7 @@ from models import User as DbUser
 from domain.exception import UserNotFoundError
 from producer import produce_message
 
+
 class UserService:
     def __init__(self, session: Session):
         self.session = session
@@ -29,9 +30,10 @@ class UserService:
             raise UserNotFoundError(f"{user_id}")
         return self._to_response_dict(db_user)
     
-    def create(self, **user_data) -> Dict[str, Any]:
+    
+    async def create(self, **user_data) -> Dict[str, Any]:
         """Create a user using keyword arguments and return response dictionary"""
-        # Add validation for uniqueness
+
         existing_user = self.session.query(DbUser).filter(
             DbUser.username == user_data.get('username')
         ).first()
@@ -56,10 +58,18 @@ class UserService:
         self.session.refresh(db_user)
         
         # Produce a message to Kafka about the new user creation
+
+        user_data = {
+            "user_id":db_user.id,
+            "username":db_user.username,
+            "email":db_user.email
+        }
+
         produce_message(
             topic="notification",
             key="user_created",
-            value="User created with ID: {}".format(db_user.id)
+            value=user_data
+            
         )
 
         return self._to_response_dict(db_user)

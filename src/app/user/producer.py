@@ -1,25 +1,48 @@
-from confluent_kafka.experimental.aio import AIOProducer
+from confluent_kafka import Producer
+import json
 
 
-async def produce_message(topic:str, key:str, value:str):
-
-    producer = AIOProducer({
-        'bootstrap.servers': 'kafka:9092',
-    })
-
-    try: 
-
-        delivery_future = await producer.produce(
-            topic=topic,
-            key=key,
-            value=value,
+def produce_message(topic: str, key: str, value: dict):
+    """
+    Envoie un message à Kafka
+    
+    Args:
+        topic: Nom du topic Kafka
+        key: Clé du message
+        value: Valeur du message (dict)
+    """
+    # Configuration du producer
+    config = {
+        'bootstrap.servers': 'kafka:9093',
+        'client.id': 'python-producer'
+    }
+    
+    # Créer le producer
+    producer = Producer(config)
+    
+    try:
+        # Convertir le message en JSON
+        message_json = json.dumps(value).encode('utf-8')
+        key_bytes = key.encode('utf-8')
         
+        # Envoyer le message
+        producer.produce(
+            topic=topic,
+            key=key_bytes,
+            value=message_json
         )
-        # wait the future for the message
-        delivered_message = await delivery_future
-
-        # flush any remaining messages
-        await producer.flush()
-
+        
+        # Attendre l'envoi
+        producer.flush()
+        
     finally:
-        await producer.close()
+        producer.flush()
+
+
+# Exemple d'utilisation
+if __name__ == "__main__":
+    produce_message(
+        topic="user-events",
+        key="user_123",
+        value={"action": "login", "timestamp": "2024-01-15T10:30:00Z"}
+    )

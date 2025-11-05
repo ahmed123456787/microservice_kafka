@@ -4,11 +4,11 @@ from typing import List
 
 from services.user import UserService
 from services.session import UserSessionService
-from domain.entities.user import User as DomainUser
 from domain.exception import UserNotFoundError
 from schema import UserCreateRequest, UserUpdateRequest, UserResponse, LoginRequest
-
 from database import get_db
+
+
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -46,13 +46,13 @@ async def get_user(user_id: int, user_service: UserService = Depends(get_user_se
 async def create_user(
     user_data: UserCreateRequest,  # Use Pydantic validator instead of DomainUser
     user_service: UserService = Depends(get_user_service)
-):
+):  
     """Create a new user"""
     try:
         user_dict = user_data.model_dump()  # This triggers Pydantic validation
         
         # Service handles business validation
-        user = user_service.create(**user_dict)
+        user = await user_service.create(**user_dict)
         return user 
     except ValueError as e:  # Service validation errors
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

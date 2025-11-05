@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from entities.notification import Notification
+from ..entities.notification import Notification
 
 class NotificationPort(ABC):
 
