@@ -34,7 +34,7 @@ class UserService(BaseService):
         new_user = await super().create(**user_data)
         print(new_user, " user")
 
-        await produce_message(
+        produce_message(
             topic="notification",
             key="user_created",
             value={

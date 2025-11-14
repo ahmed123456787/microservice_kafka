@@ -6,7 +6,7 @@ from config.config import AppConfig
 from typing import Generator
 
 
-base = declarative_base()
+Base = declarative_base()
 
 engine = create_engine(
         AppConfig.DATABASE_URL,

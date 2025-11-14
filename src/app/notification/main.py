@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from database import base, engine
+from database import Base as base , engine
 from config.config import AppConfig
 from events.consumer import UserEventConsumer
 import logging
@@ -49,10 +49,7 @@ async def lifespan(app: FastAPI):
     
     yield  # Application runs here
     
-    # Shutdown
-    logger.info("=" * 50)
-    logger.info("🛑 Shutting down FastAPI application...")
-    logger.info("=" * 50)
+    logger.info(" Shutting down FastAPI application...")
     try:
         await event_consumer.stop()
         logger.info("✅ Application shutdown complete")
